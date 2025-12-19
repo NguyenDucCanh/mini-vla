@@ -65,6 +65,25 @@ python -m scripts.collect_data \
   --output-path data/metaworld_push_bc.npz
 ```
 
+```
+python -m scripts.collect_data \
+  --env-name push-v3 \
+  --camera-name corner \
+  --episodes 100 \
+  --max-steps 100 \
+  --output-path data/push_v3.npz
+```
+
+```
+python -m scripts.collect_data_panda-gym \
+  --env-name PandaReach-v3 \
+  --episodes 200 \
+  --max-steps 100 \
+  --output-path data/panda_reach.npz
+```
+
+
+
 ## Train your VLA model
 
 Train a small vision-language diffusion policy on your collected dataset.
@@ -77,6 +96,20 @@ python -m scripts.train \
   --save-path checkpoints/model.pt \
   --device cpu
 ```
+
+python -m scripts.train \
+  --dataset-path data/panda_reach.npz \
+  --epochs 50 \
+  --batch-size 64 \
+  --save-path checkpoints/model_panda_reach.pt \
+  --device cpu
+
+python -m scripts.train \
+  --dataset-path data/humanoid_grasp.npz \
+  --epochs 100 \
+  --batch-size 64 \
+  --save-path checkpoints/model_humanoid_grasp.pt \
+  --device cpu
 
 ## Test your model in sim
 
@@ -93,7 +126,12 @@ python -m scripts.test \
   --save-video \
   --video-dir videos
 ```
-
+```
+python -m  scripts.test_panda --checkpoint checkpoints/model_panda_reach.pt --save-video
+```
+```
+python -m  scripts.test_humanoid --checkpoint checkpoints/model_humanoid_grasp.pt --save-video
+```
 ## Inference (coming soon)
 
 Planning to,
